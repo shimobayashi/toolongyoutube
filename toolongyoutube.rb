@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-input = $stdin.read
+# Input & Parse
 
+vid = ARGV[0]
+input = File.read("#{vid}.txt")
 pairs = input.scan(/((?:.*(?:\n|$)){2})/)
 
 messages = []
@@ -14,14 +16,12 @@ pairs.each do |pair|
 
   _, hour, minute, second = match_data.captures
   messages << {
-    hour: hour,
-    minute: minute,
-    second: second,
+    hour: hour.to_i || 0,
+    minute: minute.to_i,
+    second: second.to_i,
     body: body
   }
 end
-
-# pp messages
 
 chunks = []
 current_chunk = []
@@ -34,8 +34,19 @@ messages.each do |message|
   end
 end
 
+# Output for Cosense
+
+puts '#toolongyoutube'
+puts
+
 chunks.each do |chunk|
-  puts chunk.first
-  puts chunk.last
-  puts chunk.map { |m| m[:body] }.join(' / ')
+  fm = chunk.first
+  time = fm[:hour] * 360 + fm[:minute] * 60 + fm[:second]
+  puts "[https://www.youtube.com/watch?v=#{vid}&t=#{time}]"
+
+  puts 'code: 清書'
+  puts "\t"
+  puts 'code: raw'
+  puts "\t#{chunk.map { |m| m[:body] }.join(' / ')}"
+  puts
 end
