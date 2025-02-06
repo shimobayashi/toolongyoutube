@@ -9,7 +9,7 @@ pairs.each do |pair|
   timestamp, body = pair[0].split.map(&:chomp)
   next unless timestamp && body
 
-  match_data = timestamp.match(/((\d{1,2}):)?(\d{2}):(\d{2})/)
+  match_data = timestamp.match(/((\d{1,2}):)?(\d{1,2}):(\d{2})/)
   next unless match_data
 
   _, hour, minute, second = match_data.captures
@@ -21,4 +21,21 @@ pairs.each do |pair|
   }
 end
 
-pp messages
+# pp messages
+
+chunks = []
+current_chunk = []
+messages.each do |message|
+  current_chunk << message
+
+  if current_chunk.map { |m| m[:body] }.join.length > 2000 || message == messages.last
+    chunks << current_chunk
+    current_chunk = []
+  end
+end
+
+chunks.each do |chunk|
+  puts chunk.first
+  puts chunk.last
+  puts chunk.map { |m| m[:body] }.join(' / ')
+end
