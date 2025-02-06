@@ -28,6 +28,7 @@ current_chunk = []
 messages.each do |message|
   current_chunk << message
 
+  # 自分が試した限りでは2000文字より多くするとアウトプットの品質が如実に下がっていった
   if current_chunk.map { |m| m[:body] }.join.length > 2000 || message == messages.last
     chunks << current_chunk
     current_chunk = []
