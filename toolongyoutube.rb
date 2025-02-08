@@ -42,7 +42,7 @@ puts
 
 chunks.each do |chunk|
   fm = chunk.first
-  time = fm[:hour] * 360 + fm[:minute] * 60 + fm[:second]
+  time = fm[:hour] * (60 * 60) + fm[:minute] * 60 + fm[:second]
   puts "[https://www.youtube.com/watch?v=#{vid}&t=#{time}]"
 
   puts 'code: 清書'
